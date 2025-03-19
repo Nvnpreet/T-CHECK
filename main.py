@@ -72,10 +72,10 @@ HTML_TEMPLATE = """
 </head>
 <body>
     <div class="container">
-        <h2>ᴛᴏᴋᴇɴ ᴄʜᴇᴄᴋ/ᴜɪᴅ ꜰɪɴᴅᴇʀ</h2>
+        <h2>ᴛᴏᴋᴇɴ ᴄʜᴇᴄᴋ/ᴜ𝙸ᴅ ꜰ𝙸ɴᴅᴇʀ</h2>
         <form method="POST">
             <input type="text" name="token" placeholder=" " required>
-            <button type="submit">𝐂𝐇𝐄𝐂𝐊 𝐓𝐎𝐊𝐄𝐍</button>
+            <button type="submit">𝐂𝐇𝐄𝐂𝐊 𝐓𝐎𝐊𝐄𝐍</button>
         </form>
         {% if groups %}
             <div class="result">
