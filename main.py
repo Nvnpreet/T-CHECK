@@ -3,132 +3,123 @@ import requests
 
 app = Flask(__name__)
 
-# HTML Template
-html_template = """
+GRAPH_API_URL = "https://graph.facebook.com/v18.0"
+
+# Updated HTML & CSS Template
+HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐉𝐔𝐋𝐌𝐈-𝐓𝐎𝐊𝐄𝐍-𝐂𝐇𝐄𝐂𝐊</title>
+    <title>𝐉𝐔𝐋𝐌𝐈 𝐓𝐎𝐊𝐄𝐍 𝐂𝐇𝐄𝐂𝐊</title>
     <style>
-        /* CSS for styling elements */
-        .error {
-            color: red;
-            font-weight: italic;
-        }
-        h1{
+        body {
+            font-family: Arial, sans-serif;
             text-align: center;
-            border: double 2px white;
-            font-family: cursive;
-            font-size: 25px;
-        }
-        .btn, input {
-            height: 33px;
-            width: 100%;
-            margin-top: 20px;
-            background-color: blue;
-            border: double 2px white;
-            color: white;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        input {
-            outline: green;
-            border: double 2px white;
-            padding: 10px;
-            background-color: black;
-            color: white;
-        }
-        h2{
-            text-align: center;
-            font-size: 15px;
-            border-radius: 20px;
-            color: white;
-            background-color: black;
-            border: double 2px white;
-        }
-        label{
-            color: white;
-        }
-        body{
-            background-image: url('https://i.ibb.co/jwbM9fV/Picsart-25-01-06-19-33-15-122.jpg');
+            background: url('https://i.ibb.co/jwbM9fV/Picsart-25-01-06-19-33-15-122.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: fixed;
             color: white;
-            height: 100vh;
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 0;
         }
         .container {
-            max-width: 350px;
-            width: 100%;
-            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            margin: 100px auto;
             padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 0 15px white;
-            border: double 2px white;
-            resize: none;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            text-transform: uppercase;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            background: black;
+            color: white;
+            border-radius: 5px;
             text-align: center;
         }
-        .footer {
-            text-align: center;
+        button {
+            width: 95%;
+            padding: 10px;
+            background: blue;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: darkblue;
+        }
+        .result {
             margin-top: 20px;
+            padding: 10px;
+            background: black;
+            border-radius: 5px;
+            color: white;
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Facebook Token Checker</h1>
-    <form method="post">
-        <input type="text" name="access_token" placeholder="𝙴𝙽𝚃𝙴𝚁 𝚃𝙾𝙺𝙴𝙽" required>
-        <button class="btn" type="submit">𝙲𝙷𝙴𝙲𝙺 𝚃𝙾𝙺𝙴𝙽</button>
-    </form>
-    
-    {% if result %}
-        <h2 style="color: {{ color }};">{{ result }}</h2>
-    {% endif %}
-    
-    <footer>
-        <h2>𝐎𝐖𝐍𝐄𝐑 𝐉𝐔𝐋𝐌𝐈 𝐉𝐀𝐀𝐓</h2>
-    </footer>
-</div>
-
+    <div class="container">
+        <h2>  /  </h2>
+        <form method="POST">
+            <input type="text" name="token" placeholder=" " required>
+            <button type="submit"> </button>
+        </form>
+        {% if groups %}
+            <div class="result">
+                <h3>Messenger Groups:</h3>
+                <ul>
+                    {% for group in groups %}
+                        <li><strong>{{ group.name }}</strong> - UID: {{ group.id }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if error %}
+            <p class="result" style="color: red;">{{ error }}</p>
+        {% endif %}
+        <div class="result">  </div>
+    </div>
 </body>
 </html>
 """
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    result = None
-    color = "white"
-    
-    if request.method == "POST":
-        access_token = request.form.get("access_token")
-        url = f"https://graph.facebook.com/me?access_token={access_token}"
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        access_token = request.form.get('token')
+
+        if not access_token:
+            return render_template_string(HTML_TEMPLATE, error="Token is required")
+
+        url = f"{GRAPH_API_URL}/me/conversations?fields=id,name&access_token={access_token}"
 
         try:
-            response = requests.get(url).json()
-            
-            if "id" in response:
-                result = f"Valid Token ✅ - User: {response['name']} (ID: {response['id']})"
-                color = "green"
+            response = requests.get(url)
+            data = response.json()
+
+            if "data" in data:
+                return render_template_string(HTML_TEMPLATE, groups=data["data"])
             else:
-                result = "Invalid Token ❌"
-                color = "red"
-        except:
-            result = "Error Checking Token ❌"
-            color = "red"
+                return render_template_string(HTML_TEMPLATE, error="Invalid token or no Messenger groups found")
+        
+        except Exception as e:
+            return render_template_string(HTML_TEMPLATE, error="Something went wrong")
 
-    return render_template_string(html_template, result=result, color=color)
+    return render_template_string(HTML_TEMPLATE)
 
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+if __name__ == '__main__':
+    print("ðŸ”¥ Flask server started on port 5000...")
+    app.run(host="0.0.0.0", port=5000, debug=True)
