@@ -79,7 +79,7 @@ HTML_TEMPLATE = """
         </form>
         {% if groups %}
             <div class="result">
-                <h3>Messenger Groups:</h3>
+                <h3>ᴍᴇꜱꜱᴇɴɢᴇʀ ɢʀᴏᴜᴩꜱ</h3>
                 <ul>
                     {% for group in groups %}
                         <li><strong>{{ group.name }}</strong> - UID: {{ group.id }}</li>
