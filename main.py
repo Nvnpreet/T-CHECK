@@ -54,7 +54,7 @@ html_template = """
             color: white;
         }
         body{
-            background-image: url('https://i.ibb.co/nN0tkm2p/IMG-20250303-175858-693.webp');
+            background-image: url('https://i.ibb.co/sRZFHxL/2acadd2ebf64721bab65d62b844e54c5.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
