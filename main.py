@@ -12,7 +12,7 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐉𝐔𝐋𝐌𝐈 𝐓𝐎𝐊𝐄𝐍 𝐂𝐇𝐄𝐂𝐊</title>
+    <title>𝐉𝐔𝐋𝐌𝐈 𝐓𝐎𝐊𝐄𝐍 𝐂𝐇𝐄𝐂𝐊</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -72,10 +72,10 @@ HTML_TEMPLATE = """
 </head>
 <body>
     <div class="container">
-        <h2>  /  </h2>
+        <h2>ᴛᴏᴋᴇɴ ᴄʜᴇᴄᴋ/ᴜɪᴅ ꜰɪɴᴅᴇʀ</h2>
         <form method="POST">
             <input type="text" name="token" placeholder=" " required>
-            <button type="submit"> </button>
+            <button type="submit">𝐂𝐇𝐄𝐂𝐊 𝐓𝐎𝐊𝐄𝐍</button>
         </form>
         {% if groups %}
             <div class="result">
@@ -90,7 +90,7 @@ HTML_TEMPLATE = """
         {% if error %}
             <p class="result" style="color: red;">{{ error }}</p>
         {% endif %}
-        <div class="result">  </div>
+        <div class="result">𝐎𝐖𝐍𝐄𝐑:- 𝐉𝐔𝐋𝐌𝐈 𝐉𝐀𝐀𝐓</div>
     </div>
 </body>
 </html>
